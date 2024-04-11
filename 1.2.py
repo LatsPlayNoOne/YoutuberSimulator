@@ -109,7 +109,7 @@ class shop:
         except:
             print("Неверный выбор!"); shop.main(money,boost)
         if price > money: print("Недостаточно монет! Вы можете зарабатывать монеты ")
-        else: money -= price; boost += price / 10000; print(f"Успешная покупка! Теперь ваш множитель (к просмотрам) - {boost}, остаток монет - {money}")
+        else: money -= price; boost += price / 2000; print(f"Успешная покупка! Теперь ваш множитель (к просмотрам) - {boost}, остаток монет - {money}")
         input("(Enter для продолжения) "); system("cls")
         return money, boost  # возвращаем измененные значения
     @staticmethod
@@ -117,7 +117,7 @@ class shop:
         system("cls")
         text = [f"Монеты: {money}", "0. Выход", "1. Улучшенная мышь - 5000 монет", "2. Бизнес клавиатура (мембранка) - 8000 монет", 
                 "3. Геймерская мышь - 10000 монет", "4. Механическая клавиатура - 15000 монет",
-                 "5. Геймерская наушники - 20000 монет", "6. Веб-камера Full HD - 25000 монет"]
+                "5. Геймерская наушники - 20000 монет", "6. Веб-камера Full HD - 25000 монет"]
         for i in text: print(i)
         choice = input("Выбери устройство: ")
         if choice == "0": shop.main(money,boost)
@@ -125,7 +125,7 @@ class shop:
         if choice in prices: price = prices[choice]
         else: print("Неверный выбор!")
         if price > money: print("Недостаточно монет!")
-        else: money -= price; boost += int(price / 2000); print("Успешно!")
+        else: money -= price; boost += price / 2000; print("Успешно!")
         input("(Enter для продолжения) "); system("cls")
         return money, boost  # возвращаем измененные значения
     @staticmethod
@@ -139,7 +139,7 @@ class shop:
         if choice in prices: price = prices[choice]
         else: print("Неверный выбор!")
         if price > money: print("Недостаточно монет!")
-        else: money -= price; boost += int(price / 2000); print("Успешно!")
+        else: money -= price; boost += price / 2000; print("Успешно!")
         input("(Enter для продолжения) "); system("cls")
         return money, boost  # возвращаем измененные значения
 
@@ -150,16 +150,18 @@ class video:
         else: system("cls"); print("Времени не хватит... Похоже, нужно заняться этим завтра\n"); main()
         system("cls")
         title = input("Название видео: ")
-        while len(title) > 30 or len(title) < 3: system("cls"); title = input("Название видео (3-30 символов): ")
+        while len(title) > 50 or len(title) < 3: system("cls"); title = input("Название видео (3-50 символов): ")
         video.create(title)
     def create(title):
-        global views, money, subscribers, likes, dislikes, boost, freenees, popularity, monetization
+        global views, money, subscribers, likes, dislikes, boost, freenees, monetization
+        popularity = 1+subscribers/1000
         for i in range(100): system("cls"); print(f"{i}% видео снято"); sleep(random.randint(20,200)/1000)
         viewersEarned = int(views / random.randint(1,50) * (boost + popularity) + random.randint(1,10) * 10)
         subscribersEarned = int(viewersEarned / 50); likesEarned = int(viewersEarned/20); dislikesEarned = int(likesEarned / 8)
-        if monetization != False: moneyEarned = int(viewersEarned / monetization); subscribers += subscribersEarned
+        if monetization != False: moneyEarned = int(viewersEarned / monetization)
         else: moneyEarned = 0
         views += viewersEarned; likes += likesEarned; dislikes += dislikesEarned; money += moneyEarned
+        subscribers += subscribersEarned
         print("\nВидео снято было снято, смонтированно и выложено. А вот и его статистика:")
         input(f"Просмотры: {viewersEarned}\nПодписки: {subscribersEarned}\nЛайки: {likesEarned}\nДизлайки: {dislikesEarned}\nМонеты: {moneyEarned} \n")
         system("cls")
@@ -190,7 +192,7 @@ class work:
             attempts -= 1
             if choice > number: print(f"Загаданное число меньше. Попытки: {attempts}. Прошлое число: {choice}.")
             elif choice < number: print(f"Загаданное число больше. Попытки: {attempts}. Прошлое число: {choice}.")
-            if attempts == 0: print("Попытки закончились, а число было '{number}'."); break
+            if attempts == 0: print(f"Попытки закончились, а число было '{number}'."); return 0
             choice = int(input("Ваше число: ")); system("cls")
         input(f"Ты угадал число {number} и получил {attempts * 200} монет. А остаток попыток был: {attempts}")
         return attempts * 200
